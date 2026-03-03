@@ -1,11 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Olá Mundo Neon</title>
+    <style>
+        body {
+            background-color: #050505; /* Fundo quase preto para o neon destacar */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .neon-text {
+            font-size: 5rem;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            /* Camadas de sombra para criar o brilho */
+            text-shadow: 
+                0 0 7px #fff,
+                0 0 10px #fff,
+                0 0 21px #fff,
+                0 0 42px #0fa,
+                0 0 82px #0fa,
+                0 0 92px #0fa,
+                0 0 102px #0fa,
+                0 0 151px #0fa;
+            animation: pulsar 1.5s infinite alternate;
+        }
+
+        /* Animação para o brilho "piscar" levemente */
+        @keyframes pulsar {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #0fa, 0 0 70px #0fa, 0 0 80px #0fa, 0 0 100px #0fa, 0 0 150px #0fa;
+            }
+            to {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #0fa, 0 0 35px #0fa, 0 0 40px #0fa, 0 0 50px #0fa, 0 0 75px #0fa;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>jhçdjçhdjçod</h1>
+
+    <h1 class="neon-text">Olá Mundo</h1>
+
 </body>
 </html>
