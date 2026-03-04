@@ -2,50 +2,104 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Olá Mundo Neon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olá Mundo Modern Premium</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
+
         body {
-            background-color: #050505; /* Fundo quase preto para o neon destacar */
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            font-family: 'Courier New', Courier, monospace;
+            background-color: #ffffff; /* Fundo Branco */
+            font-family: 'Orbitron', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- Objetos Animados ao Fundo --- */
+        .background-objects {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(0, 255, 170, 0.2), rgba(0, 150, 255, 0.2));
+            backdrop-filter: blur(5px);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: float 15s infinite linear;
+            z-index: -1;
+        }
+
+        /* Gerando variações de formas */
+        .shape:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 10%; animation-duration: 20s; }
+        .shape:nth-child(2) { width: 150px; height: 150px; top: 70%; left: 80%; animation-duration: 25s; border-radius: 50%; }
+        .shape:nth-child(3) { width: 80px; height: 80px; top: 40%; left: 50%; animation-duration: 18s; }
+        .shape:nth-child(4) { width: 120px; height: 120px; top: 80%; left: 20%; animation-duration: 22s; border-radius: 20%; }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
+            50% { transform: translateY(-100px) rotate(180deg); opacity: 0.8; }
+            100% { transform: translateY(0) rotate(360deg); opacity: 0.5; }
+        }
+
+        /* --- Texto Principal --- */
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
         }
 
         .neon-text {
             font-size: 5rem;
-            font-weight: bold;
-            color: #fff;
+            /* Degradê no texto para o fundo branco */
+            background: linear-gradient(to right, #00b494, #0083b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-transform: uppercase;
-            /* Camadas de sombra para criar o brilho */
-            text-shadow: 
-                0 0 7px #fff,
-                0 0 10px #fff,
-                0 0 21px #fff,
-                0 0 42px #0fa,
-                0 0 82px #0fa,
-                0 0 92px #0fa,
-                0 0 102px #0fa,
-                0 0 151px #0fa;
-            animation: pulsar 1.5s infinite alternate;
+            letter-spacing: 8px;
+            margin: 0;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+            animation: pulse-light 3s infinite ease-in-out;
         }
 
-        /* Animação para o brilho "piscar" levemente */
-        @keyframes pulsar {
-            from {
-                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #0fa, 0 0 70px #0fa, 0 0 80px #0fa, 0 0 100px #0fa, 0 0 150px #0fa;
-            }
-            to {
-                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #0fa, 0 0 35px #0fa, 0 0 40px #0fa, 0 0 50px #0fa, 0 0 75px #0fa;
-            }
+        /* Reflexo sutil para fundo claro */
+        .neon-text::after {
+            content: "Olá Mundo";
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            transform: scaleY(-0.6);
+            background: linear-gradient(to bottom, rgba(0, 180, 148, 0.2), transparent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.2;
+            filter: blur(4px);
+        }
+
+        @keyframes pulse-light {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 5px 5px rgba(0,0,0,0.05)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 20px 20px rgba(0,0,0,0.15)); }
+        }
+
+        @media (max-width: 600px) {
+            .neon-text { font-size: 2.5rem; letter-spacing: 4px; }
         }
     </style>
 </head>
 <body>
 
-    <h1 class="neon-text">Olá Mundo</h1>
-
-</body>
-</html>
+    <div class="background-objects">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
