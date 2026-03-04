@@ -3,54 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olá Mundo Colorido</title>
+    <title>Mundo dos Carros</title>
     <style>
-        /* Aqui é onde a mágica das cores acontece */
         body {
-            background-color: #282c34; /* Um cinza escuro moderno */
-            color: white;              /* Cor do texto geral */
-            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Fundo asfalto escuro */
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;            /* Faz o conteúdo ficar centralizado na tela toda */
+            height: 100vh;
             margin: 0;
         }
 
-        h1 {
-            color: #61dafb;           /* Um azul brilhante */
-            font-size: 50px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        /* Estilizando o link para não parecer um link comum */
+        .link-carro {
+            text-decoration: none; /* Remove o sublinhado padrão */
+            color: #ff3e3e;        /* Vermelho esportivo */
+            font-size: 60px;
+            font-weight: bold;
+            transition: transform 0.3s, color 0.3s; /* Efeito suave ao passar o mouse */
+            cursor: pointer;
+            text-shadow: 3px 3px 15px rgba(255, 62, 62, 0.4);
+        }
+
+        /* Efeito quando o mouse passa por cima */
+        .link-carro:hover {
+            color: #ffffff;
+            transform: scale(1.1); /* Aumenta um pouquinho de tamanho */
         }
 
         p {
-            color: #ffb7b7;           /* Um tom de rosa pastel */
-            font-size: 20px;
-            font-style: italic;
-        }
-
-        .botao {
-            background-color: #4CAF50; /* Verde */
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
             margin-top: 20px;
-            cursor: pointer;
-            border-radius: 8px;
+            color: #888;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Olá, Mundo!</h1>
-    <p>Agora meu código está cheio de vida e cores.</p>
-    
-    <button class="botao">Clique aqui (só de enfeite)</button>
+    <a href="https://www.webmotors.com.br" target="_blank" class="link-carro">
+        <h1>Olá, Mundo! 🏎️</h1>
+    </a>
+
+    <p>CLIQUE NO TEXTO PARA ACELERAR</p>
 
 </body>
-</html>,
+</html>
