@@ -3,52 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Hole Hello World</title>
+    <title>Olá Mundo Colorido</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap');
-
-        body, html {
+        /* Aqui é onde a mágica das cores acontece */
+        body {
+            background-color: #282c34; /* Um cinza escuro moderno */
+            color: white;              /* Cor do texto geral */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;            /* Faz o conteúdo ficar centralizado na tela toda */
             margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #050505;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            font-family: 'Syncopate', sans-serif;
         }
 
-        /* --- O Buraco Negro --- */
-        .black-hole-container {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1;
+        h1 {
+            color: #61dafb;           /* Um azul brilhante */
+            font-size: 50px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
 
-        .black-hole {
-            width: 200px;
-            height: 200px;
-            background: #000;
-            border-radius: 50%;
-            position: relative;
-            /* Sombra interna e externa para criar o horizonte de eventos */
-            box-shadow: 
-                0 0 60px 30px #fff,  /* Brilho interno */
-                0 0 100px 60px #f0f, /* Cor do disco de acreção (magenta) */
-                0 0 140px 90px #0ff; /* Cor externa (ciano) */
-            animation: pull 4s infinite alternate ease-in-out;
+        p {
+            color: #ffb7b7;           /* Um tom de rosa pastel */
+            font-size: 20px;
+            font-style: italic;
         }
 
-        /* O disco de luz girando ao redor */
-        .accretion-disk {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            border: 2px solid rgba(255,
+        .botao {
+            background-color: #4CAF50; /* Verde */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Olá, Mundo!</h1>
+    <p>Agora meu código está cheio de vida e cores.</p>
+    
+    <button class="botao">Clique aqui (só de enfeite)</button>
+
+</body>
+</html>,
