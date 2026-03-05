@@ -3,51 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mundo dos Carros</title>
+    <title>Olá, Mundo! → Jogos</title>
+    
     <style>
         body {
-            background-color: #1a1a1a; /* Fundo asfalto escuro */
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        /* Estilizando o link para não parecer um link comum */
-        .link-carro {
-            text-decoration: none; /* Remove o sublinhado padrão */
-            color: #ff3e3e;        /* Vermelho esportivo */
-            font-size: 60px;
+        
+        .container {
+            text-align: center;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+        
+        .botao {
+            display: inline-block;
+            padding: 1.2rem 3.5rem;
+            font-size: 2.2rem;
             font-weight: bold;
-            transition: transform 0.3s, color 0.3s; /* Efeito suave ao passar o mouse */
+            color: #ff4444; /* texto vermelho pra destacar no branco */
+            background: white;
+            border: 3px solid #ff8e53;
+            border-radius: 50px;
             cursor: pointer;
-            text-shadow: 3px 3px 15px rgba(255, 62, 62, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
-
-        /* Efeito quando o mouse passa por cima */
-        .link-carro:hover {
-            color: #ffffff;
-            transform: scale(1.1); /* Aumenta um pouquinho de tamanho */
+        
+        .botao:hover {
+            transform: translateY(-8px) scale(1.08);
+            box-shadow: 0 20px 40px rgba(255, 140, 0, 0.6);
+            color: #ff6b6b;
+            border-color: #ff6b6b;
         }
-
-        p {
-            margin-top: 20px;
-            color: #888;
-            letter-spacing: 2px;
+        
+        .botao:active {
+            transform: translateY(-2px);
+        }
+        
+        .patolino {
+            margin-top: 2.5rem;
+            width: 280px;          /* ajusta o tamanho do GIF */
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            animation: bounce 2s infinite ease-in-out;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
     </style>
 </head>
 <body>
 
-    <a href="https://www.webmotors.com.br" target="_blank" class="link-carro">
-        <h1>Olá, Mundo! 🏎️</h1>
-    </a>
-
-    <p>CLIQUE NO TEXTO PARA ACELERAR</p>
+    <div class="container">
+        <h1>Olá, Mundo!</h1>
+        
+        <a href="https://itch.io/games/free" class="botao" target="_blank">
+            Jogar Agora!
+        </a>
+        
+        <!-- Patolino animado dançando (GIF com fundo transparente) -->
+        <img 
+            src="https://media.tenor.com/21645995.gif" 
+            alt="Patolino dançando animado" 
+            class="patolino">
+    </div>
 
 </body>
 </html>
