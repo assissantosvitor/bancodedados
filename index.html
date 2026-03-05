@@ -1,89 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olá, Mundo! → Jogos</title>
-    
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .container {
-            text-align: center;
-        }
-        
-        h1 {
-            color: white;
-            font-size: 4.5rem;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
-        }
-        
-        .botao {
-            display: inline-block;
-            padding: 1.2rem 3.5rem;
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #ff4444; /* texto vermelho pra destacar no branco */
-            background: white;
-            border: 3px solid #ff8e53;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-        
-        .botao:hover {
-            transform: translateY(-8px) scale(1.08);
-            box-shadow: 0 20px 40px rgba(255, 140, 0, 0.6);
-            color: #ff6b6b;
-            border-color: #ff6b6b;
-        }
-        
-        .botao:active {
-            transform: translateY(-2px);
-        }
-        
-        .patolino {
-            margin-top: 2.5rem;
-            width: 280px;          /* ajusta o tamanho do GIF */
-            height: auto;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            animation: bounce 2s infinite ease-in-out;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Botão Branco no Preto</title>
+  
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacOSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .btn {
+      background: #ffffff;
+      color: #000000;
+      border: none;
+      padding: 16px 32px;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(255,255,255,0.12);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255,255,255,0.18);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(255,255,255,0.08);
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Olá, Mundo!</h1>
-        
-        <a href="https://itch.io/games/free" class="botao" target="_blank">
-            Jogar Agora!
-        </a>
-        
-        <!-- Patolino animado dançando (GIF com fundo transparente) -->
-        <img 
-            src="https://media.tenor.com/21645995.gif" 
-            alt="Patolino dançando animado" 
-            class="patolino">
-    </div>
+  <button class="btn">CLICAR AQUI</button>
 
 </body>
 </html>
