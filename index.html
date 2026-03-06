@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NASA Mission Control - Washington</title>
+    <title>NASA Mission - Washington Engineer</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-dark: #020205;
+            --nasa-blue: #00f2fe;
+            --earth-blue: #0077be;
+            --earth-green: #228b22;
+        }
+
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            background: #000;
+            background: var(--space-dark);
             font-family: 'Orbitron', sans-serif;
-            color: #00f2fe;
+            color: white;
         }
 
-        /* Estrelas */
+        /* Estrelas com tamanhos diferentes */
+        #stars-container { position: absolute; width: 100%; height: 100%; }
         .star {
             position: absolute;
             background: white;
@@ -28,155 +36,194 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* A Terra no fundo */
-        .earth {
+        /* Planeta Terra Detalhado */
+        .earth-container {
             position: absolute;
-            bottom: -150px;
+            bottom: -250px;
             left: 50%;
             transform: translateX(-50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle at 50% 0%, #005f73 0%, #0a1128 70%);
-            border-radius: 50%;
-            box-shadow: 0 0 50px rgba(0, 242, 254, 0.2), inset 0 20px 40px rgba(255, 255, 255, 0.1);
             z-index: 1;
         }
 
-        /* Atmosfera da Terra */
-        .atmosphere {
-            position: absolute;
-            bottom: -160px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 620px;
-            height: 620px;
+        .earth {
+            width: 800px;
+            height: 800px;
+            background: #004d66 url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Terra_cl_clouds.jpg/600px-Terra_cl_clouds.jpg');
+            background-size: cover;
             border-radius: 50%;
-            box-shadow: 0 -20px 60px rgba(0, 242, 254, 0.3);
-            z-index: 0;
+            box-shadow: inset -20px -20px 50px #000, 0 0 40px rgba(0, 242, 254, 0.4);
+            animation: rotateEarth 100s linear infinite;
         }
 
-        /* Container de Lançamento */
-        .launch-platform {
+        @keyframes rotateEarth {
+            from { background-position: 0 0; }
+            to { background-position: 1600px 0; }
+        }
+
+        /* Atmosfera */
+        .atmosphere {
             position: absolute;
-            bottom: 200px;
+            top: -10px; left: -10px;
+            width: 820px; height: 820px;
+            border-radius: 50%;
+            box-shadow: 0 -15px 50px rgba(0, 242, 254, 0.3);
+            pointer-events: none;
+        }
+
+        /* Foguete em CSS */
+        .rocket-container {
+            position: absolute;
+            bottom: 300px;
             left: 50%;
             transform: translateX(-50%);
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             z-index: 10;
         }
 
-        /* O Foguete */
-        .rocket-ship {
-            font-size: 50px;
-            margin-bottom: 10px;
-            display: block;
-            transition: transform 0.1s;
+        .rocket {
+            width: 40px;
+            height: 80px;
+            background: #e0e0e0;
+            border-radius: 50% 50% 10px 10px;
+            position: relative;
+            border-bottom: 5px solid #a0a0a0;
         }
 
+        /* Janela do Foguete */
+        .rocket::before {
+            content: '';
+            position: absolute;
+            top: 20px; left: 10px;
+            width: 20px; height: 20px;
+            background: #333;
+            border: 3px solid var(--nasa-blue);
+            border-radius: 50%;
+        }
+
+        /* Aletas Laterais */
+        .fin {
+            position: absolute;
+            bottom: 0;
+            width: 20px;
+            height: 30px;
+            background: #cc0000;
+            z-index: -1;
+        }
+        .fin-left { left: -15px; border-radius: 100% 0 0 0; }
+        .fin-right { right: -15px; border-radius: 0 100% 0 0; }
+
+        /* Chama de Decolagem */
+        .fire {
+            display: none;
+            width: 20px;
+            height: 60px;
+            background: linear-gradient(to bottom, #ff4e50, #f9d423, transparent);
+            border-radius: 50%;
+            filter: blur(5px);
+            margin-top: -5px;
+            animation: burn 0.1s infinite alternate;
+        }
+
+        @keyframes burn {
+            from { height: 50px; opacity: 0.8; transform: scaleX(1); }
+            to { height: 80px; opacity: 1; transform: scaleX(1.3); }
+        }
+
+        /* Botão de Comando */
         .btn-launch {
-            padding: 20px 50px;
-            font-size: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #00f2fe;
-            color: #00f2fe;
+            margin-top: 40px;
+            padding: 15px 40px;
+            background: transparent;
+            border: 2px solid var(--nasa-blue);
+            color: var(--nasa-blue);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
             cursor: pointer;
-            letter-spacing: 5px;
+            letter-spacing: 3px;
             transition: 0.3s;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            backdrop-filter: blur(5px);
         }
 
         .btn-launch:hover {
-            background: #00f2fe;
-            color: #000;
-            box-shadow: 0 0 40px #00f2fe;
+            background: var(--nasa-blue);
+            color: black;
+            box-shadow: 0 0 30px var(--nasa-blue);
         }
 
-        /* Fogo do Foguete */
-        .thruster {
-            display: none;
-            position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 80px;
-            background: linear-gradient(to bottom, #ff4e50, #f9d423, transparent);
-            filter: blur(10px);
-            border-radius: 50%;
-            z-index: -1;
-            animation: flame 0.1s infinite alternate;
-        }
-
-        /* Animações */
-        .igniting { animation: shake 0.1s infinite; }
-        .taking-off { animation: flyUp 2.5s ease-in forwards; }
-
-        @keyframes flame {
-            from { height: 60px; opacity: 0.8; }
-            to { height: 100px; opacity: 1; }
-        }
+        /* Animações de lançamento */
+        .shaking { animation: shake 0.1s infinite; }
+        .takeoff { animation: lift 2.5s ease-in forwards; }
 
         @keyframes shake {
-            0% { transform: translateX(-50%) translate(2px, 2px); }
-            50% { transform: translateX(-50%) translate(-2px, -2px); }
+            0% { transform: translateX(-50%) translate(1px, 1px); }
+            50% { transform: translateX(-50%) translate(-1px, -1px); }
         }
 
-        @keyframes flyUp {
-            to { transform: translateX(-50%) translateY(-120vh) scale(0.5); opacity: 0; }
+        @keyframes lift {
+            to { transform: translateX(-50%) translateY(-130vh) scale(0.3); opacity: 0; }
         }
 
-        /* Rodapé */
-        .dev-info {
+        .dev-tag {
             position: absolute;
             top: 20px;
-            right: 20px;
+            width: 100%;
+            text-align: center;
             font-size: 12px;
-            letter-spacing: 2px;
-            opacity: 0.6;
+            letter-spacing: 4px;
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
 
-    <div id="stars"></div>
-    <div class="atmosphere"></div>
-    <div class="earth"></div>
+    <div class="dev-tag">CHIEF ENGINEER: WASHINGTON</div>
+    <div id="stars-container"></div>
 
-    <div class="launch-platform" id="launchPad">
-        <span class="rocket-ship" id="rocketIcon">🚀</span>
-        <button class="btn-launch" id="launchBtn" onclick="initiateLaunch()">DECOLAR</button>
-        <div class="thruster" id="fire"></div>
+    <div class="earth-container">
+        <div class="atmosphere"></div>
+        <div class="earth"></div>
     </div>
 
-    <div class="dev-info">CHIEF ENGINEER: <b>WASHINGTON</b></div>
+    <div class="rocket-container" id="missionShip">
+        <div class="rocket">
+            <div class="fin fin-left"></div>
+            <div class="fin fin-right"></div>
+        </div>
+        <div class="fire" id="engineFire"></div>
+        
+        <button class="btn-launch" id="launchBtn" onclick="startSequence()">DECOLAR</button>
+    </div>
 
     <script>
-        // Gerar estrelas
-        const starsContainer = document.getElementById('stars');
+        // Criar estrelas de tamanhos variados
+        const container = document.getElementById('stars-container');
         for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            const size = Math.random() * 3 + 'px';
-            star.style.width = size; star.style.height = size;
+            const size = (Math.random() * 3) + 'px';
+            star.style.width = size;
+            star.style.height = size;
             star.style.top = Math.random() * 100 + 'vh';
             star.style.left = Math.random() * 100 + 'vw';
             star.style.setProperty('--d', (Math.random() * 3 + 2) + 's');
-            starsContainer.appendChild(star);
+            container.appendChild(star);
         }
 
-        function initiateLaunch() {
-            const pad = document.getElementById('launchPad');
-            const fire = document.getElementById('fire');
+        function startSequence() {
+            const ship = document.getElementById('missionShip');
+            const fire = document.getElementById('engineFire');
             const btn = document.getElementById('launchBtn');
-            
-            btn.innerText = "IGNITION";
-            pad.classList.add('igniting');
-            fire.style.display = 'block';
+
+            btn.style.display = 'none'; // Esconde o botão após clicar
+            fire.style.display = 'block'; // Liga o motor
+            ship.classList.add('shaking'); // Começa a tremer
 
             setTimeout(() => {
-                pad.classList.remove('igniting');
-                pad.classList.add('taking-off');
-                
+                ship.classList.remove('shaking');
+                ship.classList.add('takeoff'); // Decola!
+
                 setTimeout(() => {
                     window.location.href = "https://www.nasa.gov";
                 }, 2000);
