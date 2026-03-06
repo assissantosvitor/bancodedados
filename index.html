@@ -3,110 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olá Mundo Espacial</title>
+    <title>Missão NASA - Washington</title>
     <style>
-        /* Estilização do Fundo Espacial */
-        body {
+        /* Reset e Fundo Profundo */
+        body, html {
             margin: 0;
             padding: 0;
-            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
-            height: 100vh;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1b2735 0%, #050505 100%);
+            font-family: 'Orbitron', sans-serif; /* Fonte futurista */
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
         }
 
-        /* Criando Estrelas com Box-Shadow */
-        .stars {
-            width: 1px;
-            height: 1px;
-            background: transparent;
-            box-shadow: 10vw 20vh #fff, 30vw 50vh #fff, 70vw 10vh #fff, 85vw 80vh #fff, 40vw 90vh #fff, 15vw 40vh #fff, 60vw 60vh #fff;
+        /* Estrelas Cintilantes */
+        .star {
             position: absolute;
-            top: 0;
-            left: 0;
-            animation: stars-animation 100s linear infinite;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--d) infinite;
         }
 
-        /* Órbita e Planeta */
-        .solar-system {
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Sistema de Órbitas Decorativas */
+        .universe {
             position: absolute;
             width: 100%;
             height: 100%;
+            pointer-events: none;
         }
 
         .orbit {
             position: absolute;
             top: 50%;
             left: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 242, 254, 0.1);
             border-radius: 50%;
             transform: translate(-50%, -50%);
+            animation: spin var(--t) linear infinite;
         }
 
-        /* Planeta Exemplo (Terra-like) */
-        .planet {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            background: #4facfe;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #00f2fe;
-        }
-
-        /* Animação de Rotação */
-        .rotate {
-            animation: rotation 15s linear infinite;
-        }
-
-        @keyframes rotation {
+        @keyframes spin {
             from { transform: translate(-50%, -50%) rotate(0deg); }
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* Estilização do Botão */
-        .btn-ola {
+        /* Botão de Lançamento */
+        .launch-box {
+            position: relative;
             z-index: 10;
-            padding: 20px 40px;
-            font-size: 24px;
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid #fff;
-            border-radius: 50px;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            text-align: center;
         }
 
-        .btn-ola:hover {
-            background: #fff;
-            color: #000;
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.6);
-            transform: scale(1.1);
+        .btn-decolar {
+            padding: 25px 60px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #00f2fe;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00f2fe;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            transition: all 0.4s;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+            position: relative;
         }
+
+        .btn-decolar:hover {
+            background: #00f2fe;
+            color: #000;
+            box-shadow: 0 0 50px #00f2fe;
+            transform: scale(1.05);
+        }
+
+        /* Efeito de Fogo na Decolagem */
+        .fire {
+            display: none;
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(to bottom, #ff4e50, #f9d423, transparent);
+            filter: blur(10px);
+            border-radius: 50%;
+            animation: burn 0.1s infinite alternate;
+        }
+
+        /* Animação Final */
+        .launching {
+            animation: shake 0.3s infinite, flyup 1.2s ease-in forwards;
+        }
+
+        @keyframes burn {
+            from { height: 80px; opacity: 0.8; }
+            to { height: 130px; opacity: 1; }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px); }
+            50% { transform: translate(-2px, -1px); }
+            100% { transform: translate(1px, 1px); }
+        }
+
+        @keyframes flyup {
+            100% { transform: translateY(-120vh) scale(0.5); opacity: 0; }
+        }
+
+        /* Assinatura */
+        .dev-tag {
+            position: absolute;
+            bottom: 20px;
+            letter-spacing: 3px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .dev-tag b { color: #00f2fe; }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="stars"></div>
+    <div id="stars-container"></div>
 
-    <div class="solar-system">
-        <div class="orbit rotate" style="width: 300px; height: 300px; animation-duration: 10s;">
-            <div class="planet" style="background: #ff4e50; width: 15px; height: 15px;"></div>
-        </div>
-        <div class="orbit rotate" style="width: 500px; height: 500px; animation-duration: 25s;">
-            <div class="planet" style="background: #4facfe; width: 25px; height: 25px;"></div>
-        </div>
+    <div class="universe">
+        <div class="orbit" style="--t: 15s; width: 400px; height: 400px;"></div>
+        <div class="orbit" style="--t: 25s; width: 600px; height: 600px;"></div>
     </div>
 
-    <button class="btn-ola" onclick="alert('Exploração iniciada!')">Olá Mundo</button>
+    <div class="launch-box" id="launchBox">
+        <button class="btn-decolar" onclick="iniciarMissao()">Decolar</button>
+        <div class="fire" id="flame"></div>
+    </div>
 
+    <div class="dev-tag">DESENVOLVEDOR: <b>WASHINGTON</b></div>
+
+    <script>
+        // Gerador de Estrelas
+        const container = document.getElementById('stars-container');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 'px';
+            star.style.width = size;
+            star.style.height = size;
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.setProperty('--d', (Math.random() * 3 + 1) + 's');
+            container.appendChild(star);
+        }
+
+        function iniciarMissao() {
+            const box = document.getElementById('launchBox');
+            const flame = document.getElementById('flame');
+            
+            // Ativa efeitos visuais
+            flame.style.display = 'block';
+            box.classList.add('launching');
+
+            // Aguarda a animação terminar e redireciona
+            setTimeout(() => {
+                window.location.href = "https://www.nasa.gov";
+            }, 1200);
+        }
+    </script>
 </body>
 </html>
