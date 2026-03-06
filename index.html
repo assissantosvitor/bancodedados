@@ -1,78 +1,112 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Olá Mundo + Buraco Negro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olá Mundo Espacial</title>
+    <style>
+        /* Estilização do Fundo Espacial */
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: radial-gradient(circle at center, #0a0a0a 0%, #000000 70%);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
+        /* Criando Estrelas com Box-Shadow */
+        .stars {
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow: 10vw 20vh #fff, 30vw 50vh #fff, 70vw 10vh #fff, 85vw 80vh #fff, 40vw 90vh #fff, 15vw 40vh #fff, 60vw 60vh #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: stars-animation 100s linear infinite;
+        }
 
-    /* Buraco negro */
-    .black-hole {
-      position: absolute;
-      width: 380px;
-      height: 380px;
-      background: radial-gradient(circle at 40% 40%, #000000 40%, #0a0015 70%, #000000 100%);
-      border-radius: 50%;
-      box-shadow: 
-        inset 0 0 120px #000000,
-        0 0 180px rgba(80, 0, 180, 0.4),
-        0 0 300px rgba(40, 0, 120, 0.25);
-      z-index: 1;
-      animation: pulse 12s infinite alternate ease-in-out;
-    }
+        /* Órbita e Planeta */
+        .solar-system {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
 
-    @keyframes pulse {
-      0%   { transform: scale(1.00); opacity: 0.92; }
-      100% { transform: scale(1.06); opacity: 0.98; }
-    }
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-    .btn {
-      position: relative;
-      z-index: 2;
-      background: #ffffff;
-      color: #000000;
-      border: none;
-      padding: 18px 42px;
-      font-size: 22px;
-      font-weight: 700;
-      text-transform: lowercase;
-      border-radius: 999px;
-      cursor: pointer;
-      box-shadow: 
-        0 6px 25px rgba(0,0,0,0.5),
-        0 0 0 1px rgba(255,255,255,0.08) inset;
-      transition: all 0.3s ease;
-      letter-spacing: 1.2px;
-    }
+        /* Planeta Exemplo (Terra-like) */
+        .planet {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #4facfe;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #00f2fe;
+        }
 
-    .btn:hover {
-      transform: translateY(-4px) scale(1.06);
-      box-shadow: 
-        0 12px 40px rgba(0,0,0,0.7),
-        0 0 0 2px rgba(255,255,255,0.15) inset;
-      background: #f0f0f0;
-    }
+        /* Animação de Rotação */
+        .rotate {
+            animation: rotation 15s linear infinite;
+        }
 
-    .btn:active {
-      transform: translateY(-1px) scale(0.98);
-    }
-  </style>
+        @keyframes rotation {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Estilização do Botão */
+        .btn-ola {
+            z-index: 10;
+            padding: 20px 40px;
+            font-size: 24px;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #fff;
+            border-radius: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-ola:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.6);
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
 
-  <div class="black-hole"></div>
-  <button class="btn">olá mundo</button>
+    <div class="stars"></div>
+
+    <div class="solar-system">
+        <div class="orbit rotate" style="width: 300px; height: 300px; animation-duration: 10s;">
+            <div class="planet" style="background: #ff4e50; width: 15px; height: 15px;"></div>
+        </div>
+        <div class="orbit rotate" style="width: 500px; height: 500px; animation-duration: 25s;">
+            <div class="planet" style="background: #4facfe; width: 25px; height: 25px;"></div>
+        </div>
+    </div>
+
+    <button class="btn-ola" onclick="alert('Exploração iniciada!')">Olá Mundo</button>
 
 </body>
 </html>
