@@ -2,256 +2,128 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NASA Control Panel - Washington</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <title>Super Turbo Race - HTML5</title>
     <style>
-        :root {
-            --glow: #00f2fe;
-            --land: #228b22;
-            --water: #003366;
-        }
-
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #050510 0%, #000 100%);
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        /* Espaço Profundo */
-        #deep-space {
-            position: absolute;
-            width: 100%; height: 100%;
-            z-index: 0;
-        }
-
-        .star {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            animation: pulse var(--p) infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.3); }
-        }
-
-        /* A TERRA DETALHADA */
-        .earth-system {
-            position: absolute;
-            bottom: -450px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-        }
-
-        .earth-sphere {
-            width: 1000px;
-            height: 1000px;
-            border-radius: 50%;
-            position: relative;
-            background: var(--water);
-            /* Textura Realista dos Continentes */
-            background-image: url('https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg');
-            background-size: 200% 100%;
-            box-shadow: 
-                inset -50px -50px 100px #000,
-                inset 20px 20px 60px rgba(255,255,255,0.1),
-                0 0 80px rgba(0, 242, 254, 0.2);
-            animation: rotateWorld 80s linear infinite;
-            overflow: hidden;
-        }
-
-        /* Camada de Nuvens */
-        .clouds {
-            position: absolute;
-            width: 100%; height: 100%;
-            background-image: url('https://www.solarsystemscope.com/textures/download/2k_earth_clouds.jpg');
-            background-size: 200% 100%;
-            opacity: 0.4;
-            animation: rotateWorld 60s linear infinite;
-            mix-blend-mode: screen;
-        }
-
-        @keyframes rotateWorld {
-            from { background-position: 0 0; }
-            to { background-position: -200% 0; }
-        }
-
-        /* Atmosfera Brilhante */
-        .atmosphere-glow {
-            position: absolute;
-            top: -10px; left: -10px;
-            width: 1020px; height: 1020px;
-            border-radius: 50%;
-            box-shadow: 0 -20px 100px rgba(0, 242, 254, 0.4);
-            pointer-events: none;
-        }
-
-        /* FOGUETE E COMANDO */
-        .rocket-module {
-            position: absolute;
-            bottom: 380px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .rocket-body {
-            width: 40px;
-            height: 100px;
-            background: linear-gradient(to right, #eee, #fff, #ddd);
-            border-radius: 50% 50% 10px 10px;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-
-        .rocket-body::before { /* Janela */
-            content: '';
-            position: absolute;
-            top: 25px; left: 12px;
-            width: 16px; height: 16px;
-            background: #222;
-            border: 2px solid var(--glow);
-            border-radius: 50%;
-        }
-
-        .fins {
-            position: absolute;
-            bottom: -5px; width: 80px; height: 40px;
-            background: #d00;
-            z-index: -1;
-            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
-        }
-
-        .thruster-fire {
-            display: none;
-            width: 25px; height: 80px;
-            background: linear-gradient(to bottom, #ff0, #f60, transparent);
-            filter: blur(8px);
-            border-radius: 50%;
-            margin-top: -10px;
-            animation: enginePulse 0.1s infinite alternate;
-        }
-
-        @keyframes enginePulse {
-            from { transform: scaleX(1); opacity: 0.8; }
-            to { transform: scaleX(1.4); opacity: 1; }
-        }
-
-        /* Interface NASA */
-        .btn-launch {
-            margin-top: 60px;
-            padding: 20px 60px;
-            background: rgba(0,0,0,0.8);
-            border: 2px solid var(--glow);
-            color: var(--glow);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            letter-spacing: 8px;
-            transition: 0.4s;
-            text-transform: uppercase;
-        }
-
-        .btn-launch:hover {
-            background: var(--glow);
-            color: #000;
-            box-shadow: 0 0 50px var(--glow);
-        }
-
-        /* Efeitos de Lançamento */
-        .shake-sequence { animation: shakeEffect 0.1s infinite; }
-        .ascension { animation: liftOff 3s cubic-bezier(.62,-0.01,.83,.67) forwards; }
-
-        @keyframes shakeEffect {
-            0% { transform: translateX(-50%) translate(2px, 2px); }
-            50% { transform: translateX(-50%) translate(-2px, -2px); }
-        }
-
-        @keyframes liftOff {
-            to { transform: translateX(-50%) translateY(-180vh) scale(0.1); opacity: 0; }
-        }
-
-        .engineer-badge {
-            position: absolute;
-            top: 40px; right: 40px;
-            font-size: 14px;
-            color: rgba(255,255,255,0.4);
-            border-right: 3px solid var(--glow);
-            padding-right: 15px;
-            text-align: right;
-        }
+        body { margin: 0; background: #222; overflow: hidden; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        canvas { background: #333; border: 4px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .info { position: absolute; top: 10px; color: white; text-align: center; pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div class="engineer-badge">
-        MISSION DIRECTOR<br>
-        <b style="color:#fff; font-size:18px">WASHINGTON</b>
+    <div class="info">
+        <h1>Super Turbo Race</h1>
+        <p>Use as setas <b>ESQUERDA</b> e <b>DIREITA</b> para desviar!</p>
+        <h2 id="score">Pontos: 0</h2>
     </div>
 
-    <div id="deep-space"></div>
+    <canvas id="gameCanvas"></canvas>
 
-    <div class="earth-system">
-        <div class="atmosphere-glow"></div>
-        <div class="earth-sphere">
-            <div class="clouds"></div>
-        </div>
-    </div>
+<script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const scoreElement = document.getElementById("score");
 
-    <div class="rocket-module" id="vessel">
-        <div class="rocket-body">
-            <div class="fins"></div>
-        </div>
-        <div class="thruster-fire" id="engine"></div>
+    canvas.width = 400;
+    canvas.height = 600;
+
+    let score = 0;
+    let gameActive = true;
+
+    // Configurações do Jogador
+    const player = {
+        x: 175,
+        y: 500,
+        w: 50,
+        h: 80,
+        color: "#ff3e3e",
+        speed: 7
+    };
+
+    // Obstáculos (Outros carros)
+    const enemies = [];
+    const enemySpeed = 5;
+
+    // Controles
+    const keys = {};
+    document.addEventListener("keydown", (e) => keys[e.code] = true);
+    document.addEventListener("keyup", (e) => keys[e.code] = false);
+
+    function spawnEnemy() {
+        const lanes = [50, 150, 250, 300];
+        const x = lanes[Math.floor(Math.random() * lanes.length)];
+        enemies.push({ x: x, y: -100, w: 50, h: 80, color: "#61dafb" });
+    }
+
+    function update() {
+        if (!gameActive) return;
+
+        // Movimentação
+        if (keys["ArrowLeft"] && player.x > 0) player.x -= player.speed;
+        if (keys["ArrowRight"] && player.x < canvas.width - player.w) player.x += player.speed;
+
+        // Lógica dos inimigos
+        if (Math.random() < 0.02) spawnEnemy();
+
+        enemies.forEach((enemy, index) => {
+            enemy.y += enemySpeed;
+
+            // Colisão
+            if (player.x < enemy.x + enemy.x &&
+                player.x + player.w > enemy.x &&
+                player.y < enemy.y + enemy.h &&
+                player.y + player.h > enemy.y) {
+                gameActive = false;
+                alert("GAME OVER! Pontuação: " + score);
+                location.reload();
+            }
+
+            // Remover inimigos que saíram da tela e somar pontos
+            if (enemy.y > canvas.height) {
+                enemies.splice(index, 1);
+                score += 10;
+                scoreElement.innerHTML = "Pontos: " + score;
+            }
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Desenhar Estrada
+        ctx.fillStyle = "#444";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        <button class="btn-launch" id="launchTrigger" onclick="startCountdown()">LAUNCH</button>
-    </div>
+        // Faixas da estrada
+        ctx.strokeStyle = "#fff";
+        ctx.setLineDash([20, 20]);
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, 0);
+        ctx.lineTo(canvas.width / 2, canvas.height);
+        ctx.stroke();
 
-    <script>
-        // Criar estrelas procedurais
-        const space = document.getElementById('deep-space');
-        for (let i = 0; i < 200; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 2.5 + 'px';
-            star.style.width = size;
-            star.style.height = size;
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.setProperty('--p', (Math.random() * 3 + 1) + 's');
-            space.appendChild(star);
-        }
+        // Desenhar Jogador (Carro Vermelho)
+        ctx.fillStyle = player.color;
+        ctx.fillRect(player.x, player.y, player.w, player.h);
+        
+        // Detalhes do carro (faróis)
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(player.x + 5, player.y + 5, 10, 10);
+        ctx.fillRect(player.x + player.w - 15, player.y + 5, 10, 10);
 
-        function startCountdown() {
-            const btn = document.getElementById('launchTrigger');
-            const vessel = document.getElementById('vessel');
-            const engine = document.getElementById('engine');
+        // Desenhar Inimigos
+        enemies.forEach(enemy => {
+            ctx.fillStyle = enemy.color;
+            ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+        });
 
-            btn.style.opacity = '0';
-            btn.style.pointerEvents = 'none';
-            
-            // Inicia ignição
-            vessel.classList.add('shake-sequence');
-            engine.style.display = 'block';
+        requestAnimationFrame(() => {
+            update();
+            draw();
+        });
+    }
 
-            setTimeout(() => {
-                vessel.classList.remove('shake-sequence');
-                vessel.classList.add('ascension');
-
-                setTimeout(() => {
-                    window.location.href = "https://www.nasa.gov";
-                }, 2800);
-            }, 2000);
-        }
-    </script>
+    draw();
+</script>
 </body>
 </html>
