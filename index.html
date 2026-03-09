@@ -2,142 +2,142 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Washington: Procedural Crawler</title>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <title>Washington FPS: Raycaster Engine</title>
     <style>
-        body { margin: 0; background: #0a0a0a; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: 'VT323', monospace; color: #0f0; }
-        canvas { border: 4px solid #333; box-shadow: 0 0 20px #000; image-rendering: pixelated; }
-        .stats { margin-bottom: 10px; font-size: 24px; letter-spacing: 2px; }
+        body { margin: 0; background: #111; color: #0f0; font-family: monospace; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+        canvas { border: 2px solid #333; box-shadow: 0 0 20px #000; background: #000; cursor: none; }
+        #ui { position: absolute; bottom: 20px; width: 640px; display: flex; justify-content: space-between; padding: 10px; background: rgba(0,0,0,0.7); border: 1px solid #0f0; }
     </style>
 </head>
 <body>
 
-    <div class="stats">HP: <span id="hp">100</span> | ANDAR: <span id="floor">1</span></div>
-    <canvas id="ctx"></canvas>
-    <div style="margin-top: 10px;">USE AS SETAS PARA EXPLORAR A MASMORRA</div>
+    <h2 style="letter-spacing: 5px;">ESTAÇÃO ORBITAL: PROTOCOLO WASHINGTON</h2>
+    <canvas id="screen" width="640" height="480"></canvas>
+    
+    <div id="ui">
+        <span>HP: <span id="hp">100</span>%</span>
+        <span>STATUS: DEFESA ATIVA</span>
+        <span>INIMIGOS: <span id="enemies">1</span></span>
+    </div>
 
     <script>
-        const canvas = document.getElementById('ctx');
-        const gl = canvas.getContext('2d');
-        const TILE = 32;
-        const SIZE = 21; // Deve ser ímpar
-        canvas.width = canvas.height = TILE * SIZE;
+        const canvas = document.getElementById('screen');
+        const ctx = canvas.getContext('2d');
 
-        let map = [];
-        let player = { x: 1, y: 1, hp: 100, floor: 1 };
-        let enemies = [];
+        // MAPA: 1 = Parede, 0 = Caminho
+        const map = [
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,1,1,0,1,0,0,0,1,1,1,0,1,0,1],
+            [1,0,1,0,0,1,0,0,0,0,0,0,0,1,0,1],
+            [1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1],
+            [1,0,1,1,1,1,0,0,1,0,0,1,0,1,0,1],
+            [1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ];
+        const mapW = 16, mapH = 8;
 
-        // --- ALGORITMO DE GERAÇÃO PROCEDURAL (Random Walk) ---
-        function generateMap() {
-            map = Array(SIZE).fill().map(() => Array(SIZE).fill(0));
-            let x = 1, y = 1;
-            let cells = 0;
-            const maxCells = (SIZE * SIZE) * 0.4;
+        // Player
+        let p = { x: 2.5, y: 2.5, dir: 0, hp: 100 };
+        let keys = {};
 
-            map[y][x] = 1;
+        // Enemy (Simple AI)
+        let en = { x: 12.5, y: 5.5, active: true };
 
-            while (cells < maxCells) {
-                let dir = Math.floor(Math.random() * 4);
-                let nx = x, ny = y;
+        window.onkeydown = e => keys[e.code] = true;
+        window.onkeyup = e => keys[e.code] = false;
 
-                if (dir === 0) ny--; else if (dir === 1) ny++;
-                else if (dir === 2) nx--; else if (dir === 3) nx++;
+        function move() {
+            let moveStep = 0.05;
+            let rotStep = 0.04;
 
-                if (nx > 0 && nx < SIZE - 1 && ny > 0 && ny < SIZE - 1) {
-                    if (map[ny][nx] === 0) {
-                        map[ny][nx] = 1;
-                        cells++;
+            if (keys['ArrowLeft']) p.dir -= rotStep;
+            if (keys['ArrowRight']) p.dir += rotStep;
+
+            let nx = p.x, ny = p.y;
+            if (keys['ArrowUp']) {
+                nx += Math.cos(p.dir) * moveStep;
+                ny += Math.sin(p.dir) * moveStep;
+            }
+            if (keys['ArrowDown']) {
+                nx -= Math.cos(p.dir) * moveStep;
+                ny -= Math.sin(p.dir) * moveStep;
+            }
+
+            // Colisão simples
+            if (map[Math.floor(ny)][Math.floor(nx)] === 0) {
+                p.x = nx; p.y = ny;
+            }
+        }
+
+        function drawRaycaster() {
+            // Teto e Chão
+            ctx.fillStyle = "#222"; ctx.fillRect(0,0,640,240);
+            ctx.fillStyle = "#444"; ctx.fillRect(0,240,640,240);
+
+            for (let i = 0; i < 640; i++) {
+                let rayAngle = (p.dir - 0.5) + (i / 640);
+                let x = p.x, y = p.y;
+                let dx = Math.cos(rayAngle), dy = Math.sin(rayAngle);
+                let dist = 0;
+
+                while (dist < 20) {
+                    dist += 0.05;
+                    let ix = Math.floor(x + dx * dist);
+                    let iy = Math.floor(y + dy * dist);
+                    
+                    if (map[iy][ix] === 1) {
+                        // Correção olho de peixe
+                        let z = dist * Math.cos(rayAngle - p.dir);
+                        let h = 480 / z;
+                        
+                        // Sombreamento por distância
+                        let color = 255 - (z * 15);
+                        ctx.strokeStyle = `rgb(0, ${color}, 0)`;
+                        ctx.beginPath();
+                        ctx.moveTo(i, 240 - h/2);
+                        ctx.lineTo(i, 240 + h/2);
+                        ctx.stroke();
+                        break;
                     }
-                    x = nx; y = ny;
                 }
-            }
-            // Coloca a saída
-            map[y][x] = 2; 
-            spawnEnemies();
-        }
-
-        function spawnEnemies() {
-            enemies = [];
-            for (let i = 0; i < 5 + player.floor; i++) {
-                let ex, ey;
-                do {
-                    ex = Math.floor(Math.random() * SIZE);
-                    ey = Math.floor(Math.random() * SIZE);
-                } while (map[ey][ex] !== 1 || (ex === player.x && ey === player.y));
-                enemies.push({ x: ex, y: ey, hp: 20 });
             }
         }
 
-        function draw() {
-            gl.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (let y = 0; y < SIZE; y++) {
-                for (let x = 0; x < SIZE; x++) {
-                    // Cálculo de distância para a Névoa de Guerra
-                    let dist = Math.hypot(x - player.x, y - player.y);
-                    if (dist > 5) {
-                        gl.fillStyle = '#000';
-                    } else {
-                        if (map[y][x] === 0) gl.fillStyle = '#1a1a1a'; // Parede
-                        else if (map[y][x] === 1) gl.fillStyle = '#333';   // Chão
-                        else if (map[y][x] === 2) gl.fillStyle = '#f0f';   // Saída
-                    }
-                    gl.fillRect(x * TILE, y * TILE, TILE, TILE);
-                }
-            }
-
-            // Inimigos
-            enemies.forEach(en => {
-                if (Math.hypot(en.x - player.x, en.y - player.y) <= 5) {
-                    gl.fillStyle = '#f00';
-                    gl.fillText('👾', en.x * TILE + 8, en.y * TILE + 24);
-                }
-            });
-
-            // Jogador
-            gl.font = "20px Arial";
-            gl.fillText('🚀', player.x * TILE + 4, player.y * TILE + 24);
+        function drawCrosshair() {
+            ctx.strokeStyle = "#0f0";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(310, 240); ctx.lineTo(330, 240);
+            ctx.moveTo(320, 230); ctx.lineTo(320, 250);
+            ctx.stroke();
         }
 
-        window.addEventListener('keydown', e => {
-            let nx = player.x, ny = player.y;
-            if (e.key === 'ArrowUp') ny--;
-            if (e.key === 'ArrowDown') ny++;
-            if (e.key === 'ArrowLeft') nx--;
-            if (e.key === 'ArrowRight') nx++;
+        function updateEnemy() {
+            if (!en.active) return;
+            // Desenha o inimigo se estiver no campo de visão (Lógica simplificada)
+            let angleToEn = Math.atan2(en.y - p.y, en.x - p.x);
+            let diff = angleToEn - p.dir;
+            while(diff < -Math.PI) diff += Math.PI*2;
+            while(diff > Math.PI) diff -= Math.PI*2;
 
-            if (map[ny][nx] !== 0) {
-                // Checa inimigo
-                let enemyIdx = enemies.findIndex(en => en.x === nx && en.y === ny);
-                if (enemyIdx > -1) {
-                    enemies[enemyIdx].hp -= 10;
-                    player.hp -= 5;
-                    if (enemies[enemyIdx].hp <= 0) enemies.splice(enemyIdx, 1);
-                } else {
-                    player.x = nx;
-                    player.y = ny;
-                }
-
-                if (map[ny][nx] === 2) {
-                    player.floor++;
-                    player.hp += 20;
-                    generateMap();
-                    player.x = 1; player.y = 1;
-                }
+            if (Math.abs(diff) < 0.5) {
+                let dist = Math.hypot(en.x - p.x, en.y - p.y);
+                let h = 400 / dist;
+                ctx.fillStyle = "red";
+                ctx.fillRect(320 + diff * 640 - 20, 240 - h/2, 40, h);
             }
+        }
 
-            if (player.hp <= 0) {
-                alert("GAME OVER! Você chegou ao andar " + player.floor);
-                location.reload();
-            }
+        function loop() {
+            move();
+            drawRaycaster();
+            updateEnemy();
+            drawCrosshair();
+            requestAnimationFrame(loop);
+        }
 
-            document.getElementById('hp').innerText = player.hp;
-            document.getElementById('floor').innerText = player.floor;
-            draw();
-        });
-
-        generateMap();
-        draw();
+        loop();
     </script>
 </body>
 </html>
