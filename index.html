@@ -1,143 +1,272 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Washington FPS: Raycaster Engine</title>
-    <style>
-        body { margin: 0; background: #111; color: #0f0; font-family: monospace; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
-        canvas { border: 2px solid #333; box-shadow: 0 0 20px #000; background: #000; cursor: none; }
-        #ui { position: absolute; bottom: 20px; width: 640px; display: flex; justify-content: space-between; padding: 10px; background: rgba(0,0,0,0.7); border: 1px solid #0f0; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🚀 Terra Interativa - Lançamento para a NASA</title>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: radial-gradient(circle at center, #0b1026 0%, #000000 70%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Press Start 2P', sans-serif;
+      color: white;
+      position: relative;
+    }
+
+    /* Estrelas piscando (camada 1) */
+    .stars {
+      position: fixed;
+      inset: 0;
+      background: transparent;
+      box-shadow: 
+        120px 80px 1px #fff,
+        340px 120px 2px #fff,
+        680px 50px 1px #fff,
+        150px 450px 1px #fff,
+        520px 380px 2px #fff,
+        820px 520px 1px #fff,
+        230px 620px 1px #fff,
+        710px 710px 2px #fff,
+        90px 850px 1px #fff,
+        450px 920px 1px #fff,
+        980px 220px 2px #fff,
+        30px 300px 1px #fff,
+        870px 850px 1px #fff;
+      animation: twinkle 4s infinite alternate ease-in-out;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Estrelas piscando (camada 2 - menor) */
+    .stars::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: transparent;
+      box-shadow: 
+        50px 200px 1px #fff,
+        600px 150px 1px #fff,
+        300px 700px 1px #fff,
+        900px 400px 1px #fff,
+        180px 900px 1px #fff,
+        750px 30px 1px #fff,
+        400px 50px 1px #fff;
+      animation: twinkle 6s infinite alternate ease-in-out;
+      opacity: 0.7;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    /* Terra girando */
+    .earth {
+      position: relative;
+      width: 420px;
+      height: 420px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/800px-The_Earth_seen_from_Apollo_17.jpg') center/cover;
+      border-radius: 50%;
+      box-shadow: 
+        0 0 80px rgba(0, 100, 255, 0.6),
+        inset 0 0 80px rgba(0, 0, 0, 0.8),
+        0 0 160px rgba(0, 255, 255, 0.3);
+      animation: rotateEarth 120s linear infinite;
+      z-index: 2;
+      cursor: grab;
+    }
+
+    @keyframes rotateEarth {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Container do foguete */
+    .rocket-container {
+      position: absolute;
+      top: 28%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 260px;
+      z-index: 3;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .rocket-container:hover {
+      transform: translateX(-50%) scale(1.08);
+    }
+
+    /* Foguete SVG realista */
+    .rocket {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+      transition: transform 0.3s ease;
+    }
+
+    /* Chama do foguete (aparece só no lançamento) */
+    .flame {
+      position: absolute;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 90px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .flame div {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 20px;
+      height: 70px;
+      background: linear-gradient(transparent, #ffcc00, #ff6600, #ff0000);
+      border-radius: 50% 50% 0 0;
+      transform: translateX(-50%);
+      animation: flameFlicker 0.1s infinite alternate;
+    }
+
+    .flame div:nth-child(2) {
+      width: 32px;
+      height: 85px;
+      background: linear-gradient(transparent, #ffff00, #ff9900, #ff3300);
+      animation-delay: 0.05s;
+      opacity: 0.8;
+    }
+
+    .flame div:nth-child(3) {
+      width: 12px;
+      height: 55px;
+      background: #ffffff;
+      animation-delay: 0.1s;
+    }
+
+    @keyframes flameFlicker {
+      0% { transform: translateX(-50%) scaleY(0.8); }
+      100% { transform: translateX(-50%) scaleY(1.2); }
+    }
+
+    /* Texto informativo */
+    .info {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+      z-index: 10;
+      white-space: nowrap;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    }
+
+    /* Animação de decolagem */
+    .launching .rocket {
+      animation: takeoff 2.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    }
+
+    .launching .flame {
+      opacity: 1;
+    }
+
+    @keyframes takeoff {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+      70% {
+        transform: translateY(-420px) rotate(-8deg);
+      }
+      100% {
+        transform: translateY(-1200px) rotate(-12deg);
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <h2 style="letter-spacing: 5px;">ESTAÇÃO ORBITAL: PROTOCOLO WASHINGTON</h2>
-    <canvas id="screen" width="640" height="480"></canvas>
-    
-    <div id="ui">
-        <span>HP: <span id="hp">100</span>%</span>
-        <span>STATUS: DEFESA ATIVA</span>
-        <span>INIMIGOS: <span id="enemies">1</span></span>
+  <div class="stars"></div>
+
+  <!-- Terra -->
+  <div class="earth"></div>
+
+  <!-- Foguete -->
+  <div class="rocket-container" id="rocketContainer">
+    <svg class="rocket" viewBox="0 0 120 300" xmlns="http://www.w3.org/2000/svg">
+      <!-- Corpo do foguete -->
+      <rect x="40" y="60" width="40" height="180" rx="8" fill="#e5e7eb"/>
+      <!-- Detalhe azul NASA -->
+      <rect x="42" y="90" width="36" height="30" fill="#1e40af"/>
+      <!-- Janelas -->
+      <circle cx="60" cy="130" r="12" fill="#111827"/>
+      <circle cx="60" cy="170" r="12" fill="#111827"/>
+      <!-- Nariz cônico -->
+      <polygon points="40,60 60,10 80,60" fill="#f3e8ff"/>
+      <!-- Aletas -->
+      <polygon points="40,230 20,260 40,260" fill="#1f2937"/>
+      <polygon points="80,230 100,260 80,260" fill="#1f2937"/>
+      <!-- Logo NASA simples -->
+      <text x="48" y="215" font-size="10" fill="#ef4444" font-weight="bold">NASA</text>
+    </svg>
+
+    <!-- Chama -->
+    <div class="flame" id="flame">
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
+  </div>
 
-    <script>
-        const canvas = document.getElementById('screen');
-        const ctx = canvas.getContext('2d');
+  <!-- Texto guia -->
+  <div class="info">
+    👆 CLIQUE NO FOGUETE PARA DECOLAR PARA A NASA 🌌
+  </div>
 
-        // MAPA: 1 = Parede, 0 = Caminho
-        const map = [
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,1,1,0,1,0,0,0,1,1,1,0,1,0,1],
-            [1,0,1,0,0,1,0,0,0,0,0,0,0,1,0,1],
-            [1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1],
-            [1,0,1,1,1,1,0,0,1,0,0,1,0,1,0,1],
-            [1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,1],
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-        ];
-        const mapW = 16, mapH = 8;
+  <script>
+    const rocketContainer = document.getElementById('rocketContainer');
+    const flame = document.getElementById('flame');
 
-        // Player
-        let p = { x: 2.5, y: 2.5, dir: 0, hp: 100 };
-        let keys = {};
+    function launchRocket() {
+      // Impede múltiplos cliques
+      rocketContainer.style.pointerEvents = 'none';
+      
+      // Adiciona classe de lançamento
+      rocketContainer.classList.add('launching');
 
-        // Enemy (Simple AI)
-        let en = { x: 12.5, y: 5.5, active: true };
+      // Depois de 2.8 segundos (fim da animação) abre o site da NASA
+      setTimeout(() => {
+        window.open('https://www.nasa.gov', '_blank');
+        
+        // Mensagem final na tela
+        const info = document.querySelector('.info');
+        info.innerHTML = '🚀 DECOLAGEM CONCLUÍDA!<br>Bem-vindo à NASA!';
+        info.style.color = '#22c55e';
+      }, 2800);
+    }
 
-        window.onkeydown = e => keys[e.code] = true;
-        window.onkeyup = e => keys[e.code] = false;
+    // Clique no foguete
+    rocketContainer.addEventListener('click', launchRocket);
 
-        function move() {
-            let moveStep = 0.05;
-            let rotStep = 0.04;
+    // Dica visual: hover já está no CSS
+  </script>
 
-            if (keys['ArrowLeft']) p.dir -= rotStep;
-            if (keys['ArrowRight']) p.dir += rotStep;
-
-            let nx = p.x, ny = p.y;
-            if (keys['ArrowUp']) {
-                nx += Math.cos(p.dir) * moveStep;
-                ny += Math.sin(p.dir) * moveStep;
-            }
-            if (keys['ArrowDown']) {
-                nx -= Math.cos(p.dir) * moveStep;
-                ny -= Math.sin(p.dir) * moveStep;
-            }
-
-            // Colisão simples
-            if (map[Math.floor(ny)][Math.floor(nx)] === 0) {
-                p.x = nx; p.y = ny;
-            }
-        }
-
-        function drawRaycaster() {
-            // Teto e Chão
-            ctx.fillStyle = "#222"; ctx.fillRect(0,0,640,240);
-            ctx.fillStyle = "#444"; ctx.fillRect(0,240,640,240);
-
-            for (let i = 0; i < 640; i++) {
-                let rayAngle = (p.dir - 0.5) + (i / 640);
-                let x = p.x, y = p.y;
-                let dx = Math.cos(rayAngle), dy = Math.sin(rayAngle);
-                let dist = 0;
-
-                while (dist < 20) {
-                    dist += 0.05;
-                    let ix = Math.floor(x + dx * dist);
-                    let iy = Math.floor(y + dy * dist);
-                    
-                    if (map[iy][ix] === 1) {
-                        // Correção olho de peixe
-                        let z = dist * Math.cos(rayAngle - p.dir);
-                        let h = 480 / z;
-                        
-                        // Sombreamento por distância
-                        let color = 255 - (z * 15);
-                        ctx.strokeStyle = `rgb(0, ${color}, 0)`;
-                        ctx.beginPath();
-                        ctx.moveTo(i, 240 - h/2);
-                        ctx.lineTo(i, 240 + h/2);
-                        ctx.stroke();
-                        break;
-                    }
-                }
-            }
-        }
-
-        function drawCrosshair() {
-            ctx.strokeStyle = "#0f0";
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(310, 240); ctx.lineTo(330, 240);
-            ctx.moveTo(320, 230); ctx.lineTo(320, 250);
-            ctx.stroke();
-        }
-
-        function updateEnemy() {
-            if (!en.active) return;
-            // Desenha o inimigo se estiver no campo de visão (Lógica simplificada)
-            let angleToEn = Math.atan2(en.y - p.y, en.x - p.x);
-            let diff = angleToEn - p.dir;
-            while(diff < -Math.PI) diff += Math.PI*2;
-            while(diff > Math.PI) diff -= Math.PI*2;
-
-            if (Math.abs(diff) < 0.5) {
-                let dist = Math.hypot(en.x - p.x, en.y - p.y);
-                let h = 400 / dist;
-                ctx.fillStyle = "red";
-                ctx.fillRect(320 + diff * 640 - 20, 240 - h/2, 40, h);
-            }
-        }
-
-        function loop() {
-            move();
-            drawRaycaster();
-            updateEnemy();
-            drawCrosshair();
-            requestAnimationFrame(loop);
-        }
-
-        loop();
-    </script>
 </body>
 </html>
